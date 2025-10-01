@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+
+{% include 'nav.html' %}
+    <div class="flex flex-1">
+        {% include 'sidebar.html' %}
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-100 p-6">
+            <div style="display: flex; justify-content: between">
+                <h2 class="text-2xl font-bold mb-6">Manage URLs</h2>
+                <a href="{% url 'add_restricted_url' %}" class="bg-green-300 p-4" style="right: 50px; position: fixed">Add Url </a>
+            </div>
+            <!-- Restricted URLs Section -->
+            <div class="bg-white p-4 rounded-lg shadow mb-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Restricted URLs</h3>
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b-2">URL</th>
+                            <th class="py-2 px-4 border-b-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for restricted_url in restricted_urls %}
+                        <tr>
+                            <td class="py-2 px-4 border-b"><a style="color: blue;" href="{{ restricted_url.url }}">{{ restricted_url.url }}</a></td>
+                            <td class="py-2 px-4 border-b">
+                                <a href="{% url 'edit_restricted_url' restricted_url.id %}"  class="text-blue-600 hover:underline">Edit</a> |
+                                <a href="{% url 'delete_restricted_url' restricted_url.id %}"  class="text-red-600 hover:underline">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Requested URLs Section -->
+            <div class="bg-white p-4 rounded-lg shadow justify-end">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Requested URLs</h3>
+                <form action="{% url 'delete_all_requested_urls' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="flex right-10 flex-end bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition duration-300">
+                        Clear Urls
+                    </button>
+                </form>
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b-2">URL</th>
+                            <th class="py-2 px-4 border-b-2">Unblocked URL</th>
+                            <th class="py-2 px-4 border-b-2">Visited At</th>
+                            <th class="py-2 px-4 border-b-2">Rejected</th>
+                            <th class="py-2 px-4 border-b-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for requested_url in requested_urls %}
+                        <tr>
+                            <td class="py-2 px-4 border-b">
+                                <div class="truncate w-64">{{ requested_url.url.url }}</div>
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <div class="truncate w-64">{{ requested_url.unblocked_url }}</div>
+                            </td>
+                            <td class="py-2 px-4 border-b">{{ requested_url.visited_at }}</td>
+                            <td class="py-2 px-4 border-b">
+                                {% if requested_url.rejected %}
+                                <span class="text-red-600">Yes</span>
+                                {% else %}
+                                <span class="text-green-600">No</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-2 px-4 border-b">
+                                <a href="" class="text-blue-600 hover:underline">Edit</a> |
+                                <a href="#" class="text-red-600 hover:underline">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

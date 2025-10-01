@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md transform transition-transform duration-500 hover:scale-105">
+        <h2 class="text-3xl font-bold mb-6 text-center text-green-600">Register</h2>
+        <form method="POST" action="" class="space-y-6">
+            {% csrf_token %}
+            <div class="relative">
+                <label for="username" class="text-sm font-semibold text-gray-700">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-shadow duration-300" 
+                    value="{{ form.username.value }}"
+                    required
+                >
+                {% if form.username.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.username.errors }}</p>
+                {% endif %}
+            </div>
+            <div class="relative">
+                <label for="email" class="text-sm font-semibold text-gray-700">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-shadow duration-300" 
+                    value="{{ form.email.value }}"
+                    required
+                >
+                {% if form.email.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.email.errors }}</p>
+                {% endif %}
+            </div>
+            <div class="relative">
+                <label for="password" class="text-sm font-semibold text-gray-700">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-shadow duration-300"
+                    required
+                >
+                {% if form.password.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.password.errors }}</p>
+                {% endif %}
+            </div>
+            <div class="relative">
+                <label for="confirm_password" class="text-sm font-semibold text-gray-700">Confirm Password</label>
+                <input 
+                    type="password" 
+                    id="confirm_password" 
+                    name="confirm_password" 
+                    class="w-full p-3 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-shadow duration-300"
+                    required
+                >
+                {% if form.confirm_password.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.confirm_password.errors }}</p>
+                {% endif %}
+            </div>
+            <button 
+                type="submit" 
+                class="w-full py-3 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-100 transition-all duration-300"
+            >
+                Register
+            </button>
+            <p class="text-center text-sm text-gray-600 mt-4">
+                Have an account? 
+                <a href="{% url 'login' %}" class="text-green-500 hover:text-green-600 transition-colors duration-300">Login</a>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

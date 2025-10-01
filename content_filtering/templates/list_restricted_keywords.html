@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+    {% include 'nav.html' %}
+    <div class="flex flex-1">
+        {% include 'sidebar.html' %}
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-100 p-6">
+            <h2 class="text-2xl font-bold mb-6">Restricted Keywords</h2>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="text-left py-2">Keyword</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for keyword in keywords %}
+                        <tr class="border-t">
+                            <td class="py-2">{{ keyword.keyword }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+    <!-- Header -->
+    <style>
+        .profiles:hover .profiles-drop{
+            display: block;
+        }
+    </style>
+    {% load static %}
+    <header class="bg-white shadow py-4 px-6 flex justify-between items-center">
+        <div class="text-2xl font-bold text-blue-600">URL Broker Dashboard</div>
+        <div class="flex items-center space-x-4">
+            <button class="relative">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0018 14H6a2.032 2.032 0 00-1.595.595L3 17h5m3 0v5h4v-5m1-11h-1V4a2 2 0 10-4 0v2H9a2 2 0 00-2 2v4h10V8a2 2 0 00-2-2h-1V4z" />
+                </svg>
+                <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">{{ request.total_blocked_urls }}</span>
+            </button>
+            <div class="relative profiles">
+                <button class="flex items-center text-gray-600 focus:outline-none">
+                    <span class="mr-2">{{ user.username }}</span>
+                    <img class="w-6 h-6 text-gray-600" src="{% static 'user.png'%}" alt="">
+
+                </button>
+                <div class="absolute  right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden profiles-drop" style="margin-top: -2px;">
+                    <!-- <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                    <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a> -->
+                    <a href="{% url 'logout'%}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>

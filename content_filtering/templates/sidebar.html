@@ -1,0 +1,11 @@
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-800 text-gray-200">
+        <div class="py-4 px-6 text-xl font-bold">Menu</div>
+        <nav class="mt-6">
+            <a href="{% url 'index'%}" class="block py-2.5 px-6 text-gray-200 hover:bg-gray-700 hover:text-white">Dashboard</a>
+            <a href="{%  url 'manage_urls' %}" class="block py-2.5 px-6 text-gray-200 hover:bg-gray-700 hover:text-white">Manage URLs</a>
+            <a href="{% url 'analytics'%}" class="block py-2.5 px-6 text-gray-200 hover:bg-gray-700 hover:text-white">Analytics</a>
+            <a href="{% url 'list_restricted_keywords'%}" class="block py-2.5 px-6 text-gray-200 hover:bg-gray-700 hover:text-white">keywords</a>
+            <a href="{% url 'add_restricted_keyword'%}" class="block py-2.5 px-6 text-gray-200 hover:bg-gray-700 hover:text-white">add keywords</a>
+        </nav>
+    </aside>

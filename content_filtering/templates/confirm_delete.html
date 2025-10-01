@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+    {% include 'nav.html' %}
+    <div class="flex flex-1">
+        {% include 'sidebar.html' %}
+        <main class="flex-1 bg-gray-100 p-6">
+            <h2 class="text-2xl font-bold mb-4">Confirm Delete</h2>
+            <p class="text-gray-600 mb-4">Are you sure you want to delete the URL "{{ restricted_url.url }}"?</p>
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-500 text-white p-2 rounded">Delete</button>
+                <a href="{% url 'index' %}" class="bg-gray-300 text-gray-800 p-2 rounded">Cancel</a>
+            </form>
+        </main>
+    </div>
+</div>
+{% endblock %}

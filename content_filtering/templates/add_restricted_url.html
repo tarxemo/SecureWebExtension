@@ -1,0 +1,29 @@
+<!-- add_restricted_url.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+    {% include 'nav.html' %}
+    <div class="flex flex-1">
+        {% include 'sidebar.html' %}
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-100 p-6">
+            <h2 class="text-2xl font-bold mb-6">Add Restricted URL</h2>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-4">Add a New URL to Restrict</h3>
+                <form method="POST" action="{% url 'add_restricted_url' %}">
+                    {% csrf_token %}
+                    <div class="flex flex-col mb-4">
+                        <label for="id_url" class="text-sm font-semibold">URL</label>
+                        <input type="url" id="id_url" name="url" value="{{ form.url.value }}" class="border rounded p-2" required>
+                        {% if form.url.errors %}
+                        <p class="text-red-500 text-sm">{{ form.url.errors }}</p>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add URL</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

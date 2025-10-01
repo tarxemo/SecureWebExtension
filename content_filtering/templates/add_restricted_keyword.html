@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+    {% include 'nav.html' %}
+    <div class="flex flex-1">
+        {% include 'sidebar.html' %}
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-100 p-6">
+            <h2 class="text-2xl font-bold mb-6">Add Restricted Keyword</h2>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-4">Add a New Keyword to Restrict</h3>
+                <form method="POST" action="{% url 'add_restricted_keyword' %}">
+                    {% csrf_token %}
+                    <div class="flex flex-col mb-4">
+                        <label for="id_keyword" class="text-sm font-semibold">Keyword</label>
+                        <input type="text" id="id_keyword" name="keyword" value="{{ form.keyword.value }}" class="border rounded p-2" required>
+                        {% if form.keyword.errors %}
+                        <p class="text-red-500 text-sm">{{ form.keyword.errors }}</p>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Keyword</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

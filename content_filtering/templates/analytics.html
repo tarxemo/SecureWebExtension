@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+
+{% include 'nav.html' %}
+    <div class="flex flex-1">
+        {% include 'sidebar.html' %}
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-100 p-6">
+            <h2 class="text-2xl font-bold mb-6">Analytics</h2>
+            
+            <!-- Key Metrics Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">Total Blocked URLs</h3>
+                    <div class="text-3xl font-bold text-blue-600 mt-2">{{ total_urls }}</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">Total Requests</h3>
+                    <div class="text-3xl font-bold text-green-600 mt-2">{{ total_requests }}</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">Total Accepted</h3>
+                    <div class="text-3xl font-bold text-blue-600 mt-2">{{ total_clicks }}</div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">Total Rejected</h3>
+                    <div class="text-3xl font-bold text-red-600 mt-2">{{ total_rejected }}</div>
+                </div>
+            </div>
+
+            <!-- Daily Requests Chart -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Daily Requests (Last 30 Days)</h3>
+                <div class="h-64 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+                    <!-- Chart Placeholder -->
+                    <canvas id="dailyRequestsChart"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Include Chart.js for visualization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var ctx = document.getElementById('dailyRequestsChart').getContext('2d');
+    var dailyRequestsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{% for data in daily_requests %}'{{ data.visited_at__date }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Requests',
+                data: [{% for data in daily_requests %}{{ data.count }}{% if not forloop.last %},{% endif %}{% endfor %}],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Number of Requests'
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,87 @@
+<!-- index.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col">
+    {% include 'nav.html' %}
+    <div class="flex flex-1">
+        {% include 'sidebar.html' %}
+        <!-- Main Content -->
+        <main class="flex-1 bg-gray-100 p-6">
+            <div class="grid flex flex-wrap grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Card 1: URL Statistics -->
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">URL Statistics</h3>
+                    <p class="text-gray-600 mt-2">Track the performance of your URLs.</p>
+                    <div class="mt-4">
+                        <div class="text-3xl font-bold text-blue-600">{{ total_clicks }}</div>
+                        <p class="text-gray-600">Total Clicks</p>
+                    </div>
+                </div>
+                <!-- Card 2: Recent URLs -->
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-gray-800">Recent URLs</h3>
+                    <p class="text-gray-600 mt-2">Your most recently added URLs.</p>
+                    <ul class="mt-4 space-y-2">
+                        {% for url in recent_urls %}
+                        <li class="text-blue-600 hover:underline">
+                            {% if url.url %}
+                            <a href="{{ url.url }}" target="_blank">{{ url.url }}</a>
+                            {% else %}
+                            <a href="{{ url.unblocked_url }}" target="_blank">{{ url.unblocked_url }}</a>
+                            {% endif %}
+                        </li>
+                        {% empty %}
+                        <li class="text-gray-600">No recent URLs</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow col-span-2">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Daily Requests (Last 30 Days)</h3>
+                    <div class="h-64 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+                        <!-- Chart Placeholder -->
+                        <canvas id="dailyRequestsChart"></canvas>
+                    </div>
+                </div>
+        </main>
+        
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var ctx = document.getElementById('dailyRequestsChart').getContext('2d');
+    var dailyRequestsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{% for data in daily_requests %}'{{ data.visited_at__date }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Requests',
+                data: [{% for data in daily_requests %}{{ data.count }}{% if not forloop.last %},{% endif %}{% endfor %}],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Number of Requests'
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+{% endblock %}
