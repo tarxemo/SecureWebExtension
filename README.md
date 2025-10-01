@@ -1,4 +1,4 @@
-# ChildProtect - Web Content Filtering System
+# SecureWebExtension - Web Content Filtering System
 
 A comprehensive web content filtering and parental control solution built with Django and Chrome extension to protect children from accessing inappropriate websites.
 
@@ -14,7 +14,7 @@ A comprehensive web content filtering and parental control solution built with D
 ## 📁 Project Structure
 
 ```
-ChildProtect/
+SecureWebExtension/
 ├── chrome_web_security_project/    # Django project configuration
 │   ├── settings.py               # Django settings
 │   ├── urls.py                   # Main URL configuration
@@ -50,8 +50,8 @@ ChildProtect/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/ChildProtect.git
-   cd ChildProtect
+   git clone https://github.com/tarxemo/SecureWebExtension.git
+   cd SecureWebExtension
    ```
 
 2. **Create and activate virtual environment**
@@ -119,23 +119,23 @@ The extension is configured to communicate with the Django backend at `http://12
 
 1. **Create a systemd service file**
    ```bash
-   sudo nano /etc/systemd/system/childprotect.service
+   sudo nano /etc/systemd/system/SecureWebExtension.service
    ```
 
 2. **Add the following configuration**:
    ```ini
    [Unit]
-   Description=ChildProtect Django Web Service
+   Description=SecureWebExtension Django Web Service
    After=network.target
    
    [Service]
    User=your-username
    Group=www-data
-   WorkingDirectory=/path/to/ChildProtect
-   ExecStart=/path/to/ChildProtect/venv/bin/python /path/to/ChildProtect/manage.py runserver 0.0.0.0:8000
+   WorkingDirectory=/path/to/SecureWebExtension
+   ExecStart=/path/to/SecureWebExtension/venv/bin/python /path/to/SecureWebExtension/manage.py runserver 0.0.0.0:8000
    Restart=always
    RestartSec=10
-   Environment="PATH=/path/to/ChildProtect/venv/bin"
+   Environment="PATH=/path/to/SecureWebExtension/venv/bin"
    Environment="DJANGO_SETTINGS_MODULE=chrome_web_security_project.settings"
    
    [Install]
@@ -145,9 +145,9 @@ The extension is configured to communicate with the Django backend at `http://12
 3. **Enable and start the service**
    ```bash
    sudo systemctl daemon-reload
-   sudo systemctl enable childprotect
-   sudo systemctl start childprotect
-   sudo systemctl status childprotect
+   sudo systemctl enable SecureWebExtension
+   sudo systemctl start SecureWebExtension
+   sudo systemctl status SecureWebExtension
    ```
 
 ### Using Gunicorn with Nginx (Production)
@@ -159,23 +159,23 @@ The extension is configured to communicate with the Django backend at `http://12
 
 2. **Create Gunicorn service file**
    ```bash
-   sudo nano /etc/systemd/system/childprotect-gunicorn.service
+   sudo nano /etc/systemd/system/SecureWebExtension-gunicorn.service
    ```
 
 3. **Add Gunicorn configuration**:
    ```ini
    [Unit]
-   Description=ChildProtect Gunicorn Service
+   Description=SecureWebExtension Gunicorn Service
    After=network.target
    
    [Service]
    User=your-username
    Group=www-data
-   WorkingDirectory=/path/to/ChildProtect
-   ExecStart=/path/to/ChildProtect/venv/bin/gunicorn --workers 3 --bind unix:/run/childprotect.sock chrome_web_security_project.wsgi:application
+   WorkingDirectory=/path/to/SecureWebExtension
+   ExecStart=/path/to/SecureWebExtension/venv/bin/gunicorn --workers 3 --bind unix:/run/SecureWebExtension.sock chrome_web_security_project.wsgi:application
    Restart=always
    RestartSec=10
-   Environment="PATH=/path/to/ChildProtect/venv/bin"
+   Environment="PATH=/path/to/SecureWebExtension/venv/bin"
    Environment="DJANGO_SETTINGS_MODULE=chrome_web_security_project.settings"
    
    [Install]
@@ -184,7 +184,7 @@ The extension is configured to communicate with the Django backend at `http://12
 
 4. **Configure Nginx**
    ```bash
-   sudo nano /etc/nginx/sites-available/childprotect
+   sudo nano /etc/nginx/sites-available/SecureWebExtension
    ```
 
 5. **Add Nginx configuration**:
@@ -195,42 +195,42 @@ The extension is configured to communicate with the Django backend at `http://12
        
        location = /favicon.ico { access_log off; log_not_found off; }
        location /static/ {
-           root /path/to/ChildProtect;
+           root /path/to/SecureWebExtension;
        }
        
        location / {
            include proxy_params;
-           proxy_pass http://unix:/run/childprotect.sock;
+           proxy_pass http://unix:/run/SecureWebExtension.sock;
        }
    }
    ```
 
 6. **Enable the site**
    ```bash
-   sudo ln -s /etc/nginx/sites-available/childprotect /etc/nginx/sites-enabled/
+   sudo ln -s /etc/nginx/sites-available/SecureWebExtension /etc/nginx/sites-enabled/
    sudo nginx -t
    sudo systemctl restart nginx
-   sudo systemctl enable childprotect-gunicorn
-   sudo systemctl start childprotect-gunicorn
+   sudo systemctl enable SecureWebExtension-gunicorn
+   sudo systemctl start SecureWebExtension-gunicorn
    ```
 
 ### Using Screen (Simple Method)
 
 1. **Create a screen session**
    ```bash
-   screen -S childprotect
+   screen -S SecureWebExtension
    ```
 
 2. **Start Django server**
    ```bash
-   cd /path/to/ChildProtect
+   cd /path/to/SecureWebExtension
    source venv/bin/activate
    python manage.py runserver 0.0.0.0:8000
    ```
 
 3. **Detach from screen**
    - Press `Ctrl+A`, then `D`
-   - To reattach: `screen -r childprotect`
+   - To reattach: `screen -r SecureWebExtension`
 
 ## 📊 Usage Guide
 
@@ -300,14 +300,14 @@ Edit `chrome_content_filtering_extension/background.js` to modify:
    - Check database file permissions
 
 3. **Service not starting**:
-   - Check service logs: `sudo journalctl -u childprotect`
+   - Check service logs: `sudo journalctl -u SecureWebExtension`
    - Verify file paths and permissions
    - Check Python virtual environment path
 
 ### Logs
 
 - **Django logs**: Check console output or configure logging in settings.py
-- **Systemd logs**: `sudo journalctl -u childprotect -f`
+- **Systemd logs**: `sudo journalctl -u SecureWebExtension -f`
 - **Extension logs**: Chrome Developer Tools → Extensions
 
 ## 🤝 Contributing
@@ -338,5 +338,5 @@ For support and questions:
 
 ---
 
-**ChildProtect** - Keeping children safe online through intelligent web filtering.
+**SecureWebExtension** - Keeping children safe online through intelligent web filtering.
 # SecureWebExtension
